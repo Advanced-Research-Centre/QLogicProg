@@ -1,4 +1,11 @@
 p_alex
 3::a_red <- n_ball
 4::a_blue <- n_ball
+10::a_orange <- n_umbrella
+20::a_green <- n_umbrella
 ?::a_red <- n_ball
+?::* <- n_ball
+?::* <- *
+*::? <- n_umbrella
++5::a_green <- n_umbrella
++100::a_red <- n_ball
