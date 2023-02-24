@@ -2,12 +2,12 @@ from sly import Lexer
 
 class QLexer(Lexer):
 
-    tokens = {PROG, NOUN, ADJ, COUNTS, VERB, 
+    tokens = {FRAME, NOUN, ADJ, COUNTS, VERB, 
               COUNTOF, ADJOF, QUERY, FORALL, ADD}
     
     ignore = ' \t\n'
 
-    PROG        = r'p_([a-zA-Z_][a-zA-Z0-9_]*)' # TODO: Extract only things after underscore : DONE!
+    FRAME		= r'f_([a-zA-Z_][a-zA-Z0-9_]*)' # TODO: Extract only things after underscore : DONE!
     NOUN        = r'n_([a-zA-Z_][a-zA-Z0-9_]*)'
     ADJ         = r'a_([a-zA-Z_][a-zA-Z0-9_]*)'
     VERB        = r'v_([a-zA-Z_][a-zA-Z0-9_]*)'
