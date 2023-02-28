@@ -7,5 +7,3 @@ f_alex
 ?::* <- n_ball
 ?::* <- *
 *::? <- n_umbrella
-+5::a_green <- n_umbrella
-+100::a_red <- n_ball

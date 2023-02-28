@@ -6,6 +6,7 @@ class QLexer(Lexer):
               COUNTS, COUNTOF, ADJOF, VERBDEF, DEFVERB, NOUNTGT, VERBON, QUERY, FORALL}
     
     ignore = ' \t\n'
+    ignore_comment = r'\#.*'
 
     FRAME		= r'f_([a-zA-Z][a-zA-Z0-9_]*)' # TODO: Extract only things after underscore : DONE!
     NOUN        = r'n_([a-zA-Z][a-zA-Z0-9_]*)'
@@ -19,7 +20,7 @@ class QLexer(Lexer):
     NOUNTGT     = r'\([1-9][0-9]*\)'
     DEFVERB     = r':='
     VERBON      = r'->'
-    VERBDEF     = r'\[[a-zA-Z][a-zA-Z0-9_:+-|]*\]'
+    VERBDEF     = r'\[[a-zA-Z][a-zA-Z0-9_:+-,|]*\]'
 
 # if __name__ == '__main__':
 #     data = '?::* <- n_ball'

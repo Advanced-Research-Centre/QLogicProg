@@ -1,7 +1,22 @@
 f_alex
 3 :: a_red <- n_ball
 4 :: a_blue <- n_ball
+#4 :: a_grey <- n_umbrella
+#4 :: a_purple <- n_umbrella
 ? :: a_red <- n_ball
 ? :: a_red <- n_ball
-v_add_red(1) := [a_red|1|:a_red|1|+1] 
-v_add_blue(1) := [a_blue|1|:a_blue|1|+1] 
+
+#CHOLCHE
+v_add_red(1) := [a_red|1|:a_red|1|+1]
+v_add_blue(1) := [a_blue|1|:a_blue|1|+1]
+
+#KAJ KORCHE NA
+#v_sub_blue(1) := [a_blue|1|:a_blue|1|-1]
+
+# SWAP (PORE DEKHA JBE)
+# v_swap(1) := [a_blue|1|:a_red|1|,a_red|1|:a_blue|1|]
+
+
+v_add_red -> n_ball
+v_add_blue -> n_ball
+? :: a_red <- n_ball
