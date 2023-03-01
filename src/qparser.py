@@ -70,38 +70,27 @@ class QParser(Parser):
                 split_left_right = re.compile(r'([\S]*):([\S]*)')
                 op_assign = split_left_right.search(op).groups()
                 self.processes[p[0][2:]][1][op_assign[0]] = op_assign[1]
-    
-    # One noun multiple adj
-    @_('VERB VERBON NOUN')
-    def expr(self, p):
-        print('Applying',p[0][2:],'on',p[2][2:])
-        #print('[DEBUG] Processes Dictionary :\n',json.dumps(self.processes, indent=2, default=str))
-        src_verb = copy.deepcopy(self.processes[p[0][2:]][1])
-        copy_noun = copy.deepcopy(self.states[p[2][2:]])
-        baler_dict = self.states[p[2][2:]]
-        for k in src_verb.keys():
-            for adj in copy_noun.keys():
-                src_verb[k] = src_verb[k].replace('a_'+adj+'|1|', str(copy_noun[adj])) 
-        for k in src_verb.keys():
-            src_verb[k] = eval(src_verb[k])
-        for k in src_verb.keys():
-            self.states[p[2][2:]][k[2:-3]] = src_verb[k]                
 
-    # One noun one adj
-    """
-    @_('VERB VERBON NOUN')
+    @_('VERB VERBON')
     def expr(self, p):
-        print('Applying',p[0][2:],'on',p[2][2:])
-        print('[DEBUG] Processes Dictionary :')#,self.processes)
-        print (json.dumps(self.processes, indent=2, default=str))
-        src_verb = self.processes[p[0][2:]][1]
-        baler_dict = self.states[p[2][2:]]
-        # print(src_verb)
-        for k in src_verb.keys():
-            if k in baler_dict.keys():
-                baler_string = src_verb[k][1]
-                tgt = re.compile(r'[0-9+-]*a_([a-zA-Z][a-zA-Z0-9_]*)\|([0-9]*)\|[0-9+-]*')
-                parts = tgt.search(baler_string).groups()
-                baler_string = baler_string.replace('a_'+parts[0]+'|'+parts[1]+'|', str(baler_dict[k]))
-                baler_dict[k] = eval(baler_string)
-    """
+        str_tgt_nouns = re.compile(r'-> \{([\S]*)\}')
+        tgt_nouns = str_tgt_nouns.search(p[1]).group(1).split(",")
+        print('Applying',p[0][2:],'on :',*[i[2:] for i in tgt_nouns])
+        tgt_noun = tgt_nouns[0]
+        #print('[DEBUG] Processes Dictionary :\n',json.dumps(self.processes, indent=2, default=str))
+        src_verb = copy.deepcopy(self.processes[p[0][2:]])
+        copy_nouns = {}
+        for n in tgt_nouns:
+            copy_nouns[n[2:]] = self.states[n[2:]]
+        for k in src_verb[1].keys():
+            for n_no in range(1,src_verb[0]+1):
+                rep_dict = copy_nouns[tgt_nouns[n_no-1][2:]]
+                for rep_adj in rep_dict.keys():
+                    src_verb[1][k] = src_verb[1][k].replace('a_'+rep_adj+'|'+str(n_no)+'|', str(rep_dict[rep_adj]))
+        for k in src_verb[1].keys():
+            src_verb[1][k] = eval(src_verb[1][k])
+        find_tgt_adj_noun = re.compile(r'a_([a-zA-Z][a-zA-Z0-9_]*)\|([0-9]*)\|')
+        for k in src_verb[1].keys():
+            tgt_adj_noun = find_tgt_adj_noun.search(k).groups()
+            tgt_noun = tgt_nouns[int(tgt_adj_noun[1])-1][2:]
+            self.states[tgt_noun][tgt_adj_noun[0]] = src_verb[1][k] 

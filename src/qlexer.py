@@ -19,7 +19,7 @@ class QLexer(Lexer):
     FORALL      = r'\*'
     NOUNTGT     = r'\([1-9][0-9]*\)'
     DEFVERB     = r':='
-    VERBON      = r'->'
+    VERBON      = r'-> \{[a-zA-Z][a-zA-Z0-9_,]*\}'
     VERBDEF     = r'\[[a-zA-Z][a-zA-Z0-9_:+-,|]*\]'
 
 # if __name__ == '__main__':
