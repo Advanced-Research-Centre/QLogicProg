@@ -8,6 +8,7 @@ class QParser(Parser):
     
     states = dict()
     processes = dict()
+    macrostates = dict()
 
     # Get the token list from the lexer
     tokens = QLexer.tokens
@@ -60,12 +61,11 @@ class QParser(Parser):
             list_adj.append(k)
         print('All (non-zero Count) Adjs for',p[4][2:],':',list_adj)
         
-    @_('VERB NOUNTGT DEFVERB VERBDEF')
+    @_('VERB NOUNTGT DEFV VERBDEF')
     def expr(self, p):
         if p[0][2:] not in self.processes:
             self.processes[p[0][2:]] = [int(p[1][1:-1]), {}]
-            v_def = p[3][1:-1]
-            v_ops = v_def.split(",")
+            v_ops = p[3][1:-1].split(",")
             for op in v_ops:
                 split_left_right = re.compile(r'([\S]*):([\S]*)')
                 op_assign = split_left_right.search(op).groups()
@@ -94,3 +94,19 @@ class QParser(Parser):
             tgt_adj_noun = find_tgt_adj_noun.search(k).groups()
             tgt_noun = tgt_nouns[int(tgt_adj_noun[1])-1][2:]
             self.states[tgt_noun][tgt_adj_noun[0]] = src_verb[1][k] 
+
+    @_('ADJ ADJOF NOUN DEFP PREPDEF')
+    def expr(self, p):      
+        an_list = p[4][1:-1].split(",")
+        if p[2][2:] not in self.macrostates:
+            self.macrostates[p[2][2:]] = {}
+        self.macrostates[p[2][2:]][p[0][2:]] = an_list
+        print(self.macrostates)
+
+    @_('PURIFY NOUN')
+    def expr(self, p):
+        ops = self.macrostates[p[1][2:]]
+        print(ops)
+        for a in ops:
+            print(self.states[p[1][2:]][a])  
+            # Distribute this value to the microstates    

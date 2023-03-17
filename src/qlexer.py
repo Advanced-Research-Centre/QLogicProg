@@ -3,7 +3,8 @@ from sly import Lexer
 class QLexer(Lexer):
 
     tokens = {FRAME, NOUN, ADJ, VERB, 
-              COUNTS, COUNTOF, ADJOF, VERBDEF, DEFVERB, NOUNTGT, VERBON, QUERY, FORALL}
+              COUNTS, COUNTOF, ADJOF, VERBDEF, DEFV, DEFP, NOUNTGT, 
+              VERBON, QUERY, FORALL, PREPDEF, PURIFY}
     
     ignore = ' \t\n'
     ignore_comment = r'\#.*'
@@ -18,9 +19,14 @@ class QLexer(Lexer):
     COUNTS      = r'\d+'
     FORALL      = r'\*'
     NOUNTGT     = r'\([1-9][0-9]*\)'
-    DEFVERB     = r':='
+    DEFV       = r':='
     VERBON      = r'-> \{[a-zA-Z][a-zA-Z0-9_,]*\}'
     VERBDEF     = r'\[[a-zA-Z][a-zA-Z0-9_:+-,|]*\]'
+
+    DEFP       = r'=='
+    PREPDEF     = r'/[a-zA-Z][a-zA-Z0-9_<:,|]*/'
+
+    PURIFY      = r'purify'
 
 # if __name__ == '__main__':
 #     data = '?::* <- n_ball'
